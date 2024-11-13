@@ -12,8 +12,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Data directory
-data/
+# Data file
+data.json
 
 # IDE specific files
 .idea/
