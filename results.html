@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Waste Survey Results</title>
+    <title>Environmental Survey Results</title>
     <style>
         * {
             margin: 0;
@@ -37,10 +37,11 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            font-size: 0.9em;
         }
 
         th, td {
-            padding: 12px;
+            padding: 12px 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -48,6 +49,7 @@
         th {
             background-color: #34495e;
             color: white;
+            white-space: nowrap;
         }
 
         tr:nth-child(even) {
@@ -83,6 +85,18 @@
             color: #666;
             font-style: italic;
         }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            th, td {
+                font-size: 0.8em;
+                padding: 8px 4px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -92,7 +106,7 @@
             <a href="#" onclick="refreshData()">Refresh Data</a>
         </div>
         
-        <h1>E-Waste Survey Results</h1>
+        <h1>Environmental Survey Results</h1>
         <div id="results"></div>
     </div>
 
@@ -115,32 +129,36 @@
             }
 
             const table = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Device Type</th>
-                            <th>Condition</th>
-                            <th>Age (years)</th>
-                            <th>Disposal Method</th>
-                            <th>Comments</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${data.map(entry => `
+                <div class="table-responsive">
+                    <table>
+                        <thead>
                             <tr>
-                                <td>${entry.name}</td>
-                                <td>${entry.deviceType}</td>
-                                <td>${entry.condition}</td>
-                                <td>${entry.age}</td>
-                                <td>${entry.disposal}</td>
-                                <td>${entry.comments || '-'}</td>
-                                <td>${new Date(entry.timestamp).toLocaleString()}</td>
+                                <th>Name</th>
+                                <th>Refuse Single-use<br>(per week)</th>
+                                <th>Second Life Items<br>(per year)</th>
+                                <th>Recycle Frequency<br>(per month)</th>
+                                <th>Composting<br>Habit</th>
+                                <th>Durable Products<br>Choice</th>
+                                <th>Comments</th>
+                                <th>Timestamp</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            ${data.map(entry => `
+                                <tr>
+                                    <td>${entry.name}</td>
+                                    <td>${entry.refuseFrequency}</td>
+                                    <td>${entry.repairFrequency}</td>
+                                    <td>${entry.recycleFrequency}</td>
+                                    <td>${entry.compostHabit}</td>
+                                    <td>${entry.durableChoice}</td>
+                                    <td>${entry.comments || '-'}</td>
+                                    <td>${new Date(entry.timestamp).toLocaleString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
             `;
             
             document.getElementById('results').innerHTML = table;
