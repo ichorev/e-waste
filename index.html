@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Waste Survey</title>
+    <title>Environmental Behavior Survey</title>
     <style>
         * {
             margin: 0;
@@ -34,31 +34,30 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .question {
+            font-weight: 500;
+            color: #34495e;
+            margin-bottom: 12px;
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .radio-option {
+            margin: 10px 0;
         }
 
         label {
-            display: block;
-            margin-bottom: 8px;
-            color: #34495e;
-            font-weight: 500;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        select {
-            background-color: white;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
+            display: inline-block;
+            margin-left: 8px;
+            color: #2c3e50;
         }
 
         button {
@@ -94,62 +93,156 @@
             border-radius: 4px;
             display: none;
         }
+
+        .nav-buttons {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .nav-buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 0 10px;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>E-Waste Survey</h1>
+        <div class="nav-buttons">
+            <a href="/results">View Results</a>
+        </div>
+
+        <h1>Environmental Behavior Survey</h1>
         <div id="successMessage" class="success-message">Survey submitted successfully!</div>
         <div id="errorMessage" class="error-message">Error submitting survey. Please try again.</div>
         
         <form id="surveyForm">
             <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" required>
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" required style="width: 100%; padding: 8px; margin-top: 5px;">
+            </div>
+
+            <div class="form-group">
+                <div class="question">1. How often do you refuse unnecessary items and single-use plastics per week?</div>
+                <div class="options">
+                    <div class="radio-option">
+                        <input type="radio" id="refuse1" name="refuseFrequency" value="0-5" required>
+                        <label for="refuse1">0-5 times</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="refuse2" name="refuseFrequency" value="6-10">
+                        <label for="refuse2">6-10 times</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="refuse3" name="refuseFrequency" value="11-15">
+                        <label for="refuse3">11-15 times</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="refuse4" name="refuseFrequency" value="15+">
+                        <label for="refuse4">More than 15 times</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="question">2. How many items do you give a second life through repair, repurposing, or donating per year?</div>
+                <div class="options">
+                    <div class="radio-option">
+                        <input type="radio" id="repair1" name="repairFrequency" value="1-5" required>
+                        <label for="repair1">1-5 items</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="repair2" name="repairFrequency" value="6-10">
+                        <label for="repair2">6-10 items</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="repair3" name="repairFrequency" value="11-15">
+                        <label for="repair3">11-15 items</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="repair4" name="repairFrequency" value="15+">
+                        <label for="repair4">More than 15 items</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="question">3. How many times do you properly dispose of recyclable materials per month?</div>
+                <div class="options">
+                    <div class="radio-option">
+                        <input type="radio" id="recycle1" name="recycleFrequency" value="1-4" required>
+                        <label for="recycle1">1-4 times</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="recycle2" name="recycleFrequency" value="5-8">
+                        <label for="recycle2">5-8 times</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="recycle3" name="recycleFrequency" value="9-12">
+                        <label for="recycle3">9-12 times</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="recycle4" name="recycleFrequency" value="12+">
+                        <label for="recycle4">More than 12 times</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="question">4. Do you compost organic waste to enrich soil and reduce methane emissions?</div>
+                <div class="options">
+                    <div class="radio-option">
+                        <input type="radio" id="compost1" name="compostHabit" value="never" required>
+                        <label for="compost1">Never</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="compost2" name="compostHabit" value="sometimes">
+                        <label for="compost2">Sometimes</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="compost3" name="compostHabit" value="regularly">
+                        <label for="compost3">Regularly</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="compost4" name="compostHabit" value="always">
+                        <label for="compost4">Always</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="question">5. How often do you choose durable, long-lasting products over cheaper alternatives?</div>
+                <div class="options">
+                    <div class="radio-option">
+                        <input type="radio" id="durable1" name="durableChoice" value="rarely" required>
+                        <label for="durable1">Rarely</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="durable2" name="durableChoice" value="sometimes">
+                        <label for="durable2">Sometimes</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="durable3" name="durableChoice" value="often">
+                        <label for="durable3">Often</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="durable4" name="durableChoice" value="always">
+                        <label for="durable4">Always</label>
+                    </div>
+                </div>
             </div>
             
             <div class="form-group">
-                <label for="deviceType">Type of E-Waste:</label>
-                <select id="deviceType" required>
-                    <option value="">Select device type</option>
-                    <option value="smartphone">Smartphone</option>
-                    <option value="laptop">Laptop</option>
-                    <option value="tablet">Tablet</option>
-                    <option value="desktop">Desktop Computer</option>
-                    <option value="printer">Printer</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="condition">Device Condition:</label>
-                <select id="condition" required>
-                    <option value="">Select condition</option>
-                    <option value="working">Working</option>
-                    <option value="partially-working">Partially Working</option>
-                    <option value="not-working">Not Working</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="age">Device Age (years):</label>
-                <input type="number" id="age" min="0" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="disposal">Preferred Disposal Method:</label>
-                <select id="disposal" required>
-                    <option value="">Select disposal method</option>
-                    <option value="recycle">Recycle</option>
-                    <option value="donate">Donate</option>
-                    <option value="sell">Sell</option>
-                    <option value="trade-in">Trade-in</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="comments">Additional Comments:</label>
-                <textarea id="comments"></textarea>
+                <label for="comments">Additional Comments (Optional):</label>
+                <textarea id="comments" style="width: 100%; padding: 8px; margin-top: 5px; min-height: 100px;"></textarea>
             </div>
             
             <button type="submit">Submit Survey</button>
@@ -165,10 +258,11 @@
             
             const formData = {
                 name: document.getElementById('name').value,
-                deviceType: document.getElementById('deviceType').value,
-                condition: document.getElementById('condition').value,
-                age: document.getElementById('age').value,
-                disposal: document.getElementById('disposal').value,
+                refuseFrequency: document.querySelector('input[name="refuseFrequency"]:checked').value,
+                repairFrequency: document.querySelector('input[name="repairFrequency"]:checked').value,
+                recycleFrequency: document.querySelector('input[name="recycleFrequency"]:checked').value,
+                compostHabit: document.querySelector('input[name="compostHabit"]:checked').value,
+                durableChoice: document.querySelector('input[name="durableChoice"]:checked').value,
                 comments: document.getElementById('comments').value
             };
             
