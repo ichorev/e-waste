@@ -26,6 +26,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/results', (req, res) => {
+    res.sendFile(path.join(__dirname, 'results.html'));
+});
+
 app.post('/api/submit', async (req, res) => {
     try {
         const surveyData = {
