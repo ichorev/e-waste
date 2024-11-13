@@ -4,19 +4,9 @@ const fs = require('fs').promises;
 const app = express();
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('./'));
 
-const DATA_FILE = './data/data.json';
-
-// Ensure data directory exists
-const ensureDataDirectory = async () => {
-    const dataDir = path.dirname(DATA_FILE);
-    try {
-        await fs.access(dataDir);
-    } catch {
-        await fs.mkdir(dataDir, { recursive: true });
-    }
-};
+const DATA_FILE = './data.json';
 
 // Initialize data file if it doesn't exist
 const initializeDataFile = async () => {
@@ -29,12 +19,11 @@ const initializeDataFile = async () => {
 
 // Setup data storage
 (async () => {
-    await ensureDataDirectory();
     await initializeDataFile();
 })();
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.post('/api/submit', async (req, res) => {
