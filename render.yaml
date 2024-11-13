@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: ewaste-survey
+    name: environmental-survey
     env: node
     buildCommand: npm install
     startCommand: npm start
