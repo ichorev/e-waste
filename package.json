@@ -1,7 +1,7 @@
 {
-  "name": "ewaste-survey",
+  "name": "environmental-survey",
   "version": "1.0.0",
-  "description": "E-waste survey application",
+  "description": "Environmental behavior survey application",
   "main": "server.js",
   "license": "MIT",
   "scripts": {
