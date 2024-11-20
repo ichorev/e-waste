@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E</title>
+    <title>Environmental Behavior Survey</title>
     <style>
         * {
             margin: 0;
@@ -58,6 +58,20 @@
             display: inline-block;
             margin-left: 8px;
             color: #2c3e50;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
         }
 
         button {
@@ -117,7 +131,7 @@
 <body>
     <div class="container">
         <div class="nav-buttons">
-            <a href="/results">View Results</a>
+            <a href="/results.html">View Results</a>
         </div>
 
         <h1>Environmental Behavior Survey</h1>
@@ -127,7 +141,7 @@
         <form id="surveyForm">
             <div class="form-group">
                 <label for="name">Your Name:</label>
-                <input type="text" id="name" required style="width: 100%; padding: 8px; margin-top: 5px;">
+                <input type="text" id="name" required>
             </div>
 
             <div class="form-group">
@@ -242,14 +256,36 @@
             
             <div class="form-group">
                 <label for="comments">Additional Comments (Optional):</label>
-                <textarea id="comments" style="width: 100%; padding: 8px; margin-top: 5px; min-height: 100px;"></textarea>
+                <textarea id="comments"></textarea>
             </div>
             
             <button type="submit">Submit Survey</button>
         </form>
     </div>
 
-    <script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANZGnO1TZvHbDVNtN3IpK3vfDgYcS9k2k",
+            authDomain: "school-project-ewaste.firebaseapp.com",
+            databaseURL: "https://school-project-ewaste-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "school-project-ewaste",
+            storageBucket: "school-project-ewaste.firebasestorage.app",
+            messagingSenderId: "57572832036",
+            appId: "1:57572832036:web:583e366c40790b335bb9b1",
+            measurementId: "G-Q6BCX46YTB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+
+        // Form submission handler
         document.getElementById('surveyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -263,21 +299,14 @@
                 recycleFrequency: document.querySelector('input[name="recycleFrequency"]:checked').value,
                 compostHabit: document.querySelector('input[name="compostHabit"]:checked').value,
                 durableChoice: document.querySelector('input[name="durableChoice"]:checked').value,
-                comments: document.getElementById('comments').value
+                comments: document.getElementById('comments').value,
+                timestamp: new Date().toISOString()
             };
             
             try {
-                const response = await fetch('/api/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                // Push data to Firebase
+                const surveysRef = ref(database, 'surveys');
+                await push(surveysRef, formData);
                 
                 successMessage.style.display = 'block';
                 errorMessage.style.display = 'none';
