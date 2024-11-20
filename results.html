@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-waste Survey Results</title>
+    <title>E-Waste Survey Results</title>
     <style>
         * {
             margin: 0;
@@ -63,12 +63,14 @@
             border-collapse: collapse;
             margin-top: 20px;
             background-color: white;
+            font-size: 14px;
         }
 
         th, td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            vertical-align: top;
         }
 
         th {
@@ -87,6 +89,22 @@
             background-color: #f1f1f1;
         }
 
+        .array-data {
+            display: block;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .array-data li {
+            display: inline-block;
+            background-color: #e8f0fe;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin: 2px;
+            font-size: 12px;
+        }
+
         .no-data {
             text-align: center;
             padding: 20px;
@@ -103,46 +121,12 @@
             color: #666;
         }
 
-        @media screen and (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            th, td {
-                padding: 8px;
-                font-size: 14px;
-            }
-
-            .nav-buttons a {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-        }
-
-        /* Custom styles for specific columns */
-        .timestamp-column {
-            white-space: nowrap;
-        }
-
-        .comments-column {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* Tooltip for comments */
         .tooltip {
             position: relative;
             display: inline-block;
         }
 
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .tooltiptext {
+        .tooltip .tooltiptext {
             visibility: hidden;
             background-color: #333;
             color: #fff;
@@ -152,14 +136,30 @@
             position: absolute;
             z-index: 1;
             bottom: 125%;
-            left: 0;
-            margin-left: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 200px;
             opacity: 0;
             transition: opacity 0.3s;
-            width: 200px;
-            font-size: 14px;
-            word-wrap: break-word;
-            white-space: pre-wrap;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
         }
     </style>
 </head>
@@ -170,7 +170,7 @@
             <a href="#" onclick="refreshData()">Refresh Data</a>
         </div>
         
-        <h1>E-waste Survey Results</h1>
+        <h1>E-Waste Survey Results</h1>
         <div id="results">
             <p class="loading">Loading survey results...</p>
         </div>
@@ -209,6 +209,11 @@
             return new Date(dateString).toLocaleDateString('en-US', options);
         }
 
+        function formatArrayData(array) {
+            if (!array || array.length === 0) return '-';
+            return `<ul class="array-data">${array.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        }
+
         function displayData(surveys) {
             const resultsDiv = document.getElementById('results');
             
@@ -233,11 +238,16 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Refuse Single-use<br>(per week)</th>
-                                <th>Second Life Items<br>(per year)</th>
-                                <th>Recycle Frequency<br>(per month)</th>
-                                <th>Composting<br>Habit</th>
-                                <th>Durable Products<br>Choice</th>
+                                <th>Devices<br>Owned</th>
+                                <th>Disposal<br>Methods</th>
+                                <th>E-waste<br>Awareness</th>
+                                <th>Collection<br>Point</th>
+                                <th>Environmental<br>Impact</th>
+                                <th>Device<br>Lifetime</th>
+                                <th>Replacement<br>Factors</th>
+                                <th>Stored<br>Devices</th>
+                                <th>Storage<br>Reasons</th>
+                                <th>Recycling<br>Barriers</th>
                                 <th>Comments</th>
                                 <th>Timestamp</th>
                             </tr>
@@ -246,20 +256,25 @@
                             ${surveysArray.map(entry => `
                                 <tr>
                                     <td>${entry.name}</td>
-                                    <td>${entry.refuseFrequency}</td>
-                                    <td>${entry.repairFrequency}</td>
-                                    <td>${entry.recycleFrequency}</td>
-                                    <td>${entry.compostHabit}</td>
-                                    <td>${entry.durableChoice}</td>
-                                    <td class="comments-column">
+                                    <td>${entry.deviceCount}</td>
+                                    <td>${formatArrayData(entry.disposalMethods)}</td>
+                                    <td>${entry.ewasteAwareness}</td>
+                                    <td>${entry.collectionPoint}</td>
+                                    <td>${entry.environmentalImpact}</td>
+                                    <td>${entry.deviceKeepDuration}</td>
+                                    <td>${formatArrayData(entry.replacementFactors)}</td>
+                                    <td>${entry.storedDevices}</td>
+                                    <td>${formatArrayData(entry.storageReasons)}</td>
+                                    <td>${formatArrayData(entry.recyclingBarriers)}</td>
+                                    <td>
                                         ${entry.comments ? `
                                             <div class="tooltip">
-                                                ${entry.comments.substring(0, 30)}${entry.comments.length > 30 ? '...' : ''}
+                                                ${entry.comments.substring(0, 20)}${entry.comments.length > 20 ? '...' : ''}
                                                 <span class="tooltiptext">${entry.comments}</span>
                                             </div>
                                         ` : '-'}
                                     </td>
-                                    <td class="timestamp-column">${formatDate(entry.timestamp)}</td>
+                                    <td>${formatDate(entry.timestamp)}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
