@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E Waste survey</title>
+    <title>E-Waste and Environmental Behavior Survey</title>
     <style>
         * {
             margin: 0;
@@ -27,10 +27,19 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #2c3e50;
             margin-bottom: 30px;
+        }
+
+        h2 {
+            padding: 15px;
+            background-color: #34495e;
+            color: white;
+            border-radius: 8px;
+            margin-top: 40px;
+            font-size: 1.2em;
         }
 
         .form-group {
@@ -50,7 +59,7 @@
             margin-left: 20px;
         }
 
-        .radio-option {
+        .radio-option, .checkbox-option {
             margin: 10px 0;
         }
 
@@ -60,7 +69,7 @@
             color: #2c3e50;
         }
 
-        input[type="text"], textarea {
+        input[type="text"], input[type="number"], textarea, select {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
@@ -84,6 +93,7 @@
             font-size: 16px;
             width: 100%;
             transition: background-color 0.3s;
+            margin-top: 20px;
         }
 
         button:hover {
@@ -126,6 +136,10 @@
         .nav-buttons a:hover {
             background-color: #2980b9;
         }
+
+        .checkbox-group {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -134,7 +148,7 @@
             <a href="/results.html">View Results</a>
         </div>
 
-        <h1>e-Waste Survey</h1>
+        <h1>E-Waste and Environmental Behavior Survey</h1>
         <div id="successMessage" class="success-message">Survey submitted successfully!</div>
         <div id="errorMessage" class="error-message">Error submitting survey. Please try again.</div>
         
@@ -144,8 +158,43 @@
                 <input type="text" id="name" required>
             </div>
 
+            <h2>Device Usage and Disposal</h2>
+            
             <div class="form-group">
-                <div class="question">1. How often do you refuse unnecessary items and single-use plastics per week?</div>
+                <div class="question">How many electronic devices do you currently own?</div>
+                <input type="number" id="deviceCount" required min="0">
+            </div>
+
+            <div class="form-group">
+                <div class="question">What do you typically do with your old electronic devices? (Select all that apply)</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="disposal1" name="disposalMethod" value="store">
+                        <label for="disposal1">Store them at home</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="disposal2" name="disposalMethod" value="trash">
+                        <label for="disposal2">Throw in regular trash</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="disposal3" name="disposalMethod" value="sell">
+                        <label for="disposal3">Sell them</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="disposal4" name="disposalMethod" value="give">
+                        <label for="disposal4">Give to family/friends</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="disposal5" name="disposalMethod" value="recycle">
+                        <label for="disposal5">Take to recycling center</label>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Environmental Habits</h2>
+
+            <div class="form-group">
+                <div class="question">How often do you refuse unnecessary items and single-use plastics per week?</div>
                 <div class="options">
                     <div class="radio-option">
                         <input type="radio" id="refuse1" name="refuseFrequency" value="0-5" required>
@@ -167,7 +216,7 @@
             </div>
 
             <div class="form-group">
-                <div class="question">2. How many items do you give a second life through repair, repurposing, or donating per year?</div>
+                <div class="question">How many items do you give a second life through repair, repurposing, or donating per year?</div>
                 <div class="options">
                     <div class="radio-option">
                         <input type="radio" id="repair1" name="repairFrequency" value="1-5" required>
@@ -188,72 +237,177 @@
                 </div>
             </div>
 
+            <h2>E-Waste Awareness</h2>
+
             <div class="form-group">
-                <div class="question">3. How many times do you properly dispose of recyclable materials per month?</div>
+                <div class="question">Are you familiar with what constitutes e-waste?</div>
                 <div class="options">
                     <div class="radio-option">
-                        <input type="radio" id="recycle1" name="recycleFrequency" value="1-4" required>
-                        <label for="recycle1">1-4 times</label>
+                        <input type="radio" id="awareness1" name="ewasteAwareness" value="very" required>
+                        <label for="awareness1">Very familiar</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="recycle2" name="recycleFrequency" value="5-8">
-                        <label for="recycle2">5-8 times</label>
+                        <input type="radio" id="awareness2" name="ewasteAwareness" value="somewhat">
+                        <label for="awareness2">Somewhat familiar</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="recycle3" name="recycleFrequency" value="9-12">
-                        <label for="recycle3">9-12 times</label>
+                        <input type="radio" id="awareness3" name="ewasteAwareness" value="little">
+                        <label for="awareness3">Little knowledge</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="recycle4" name="recycleFrequency" value="12+">
-                        <label for="recycle4">More than 12 times</label>
+                        <input type="radio" id="awareness4" name="ewasteAwareness" value="not">
+                        <label for="awareness4">Not familiar at all</label>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="question">4. Do you compost organic waste to enrich soil and reduce methane emissions?</div>
+                <div class="question">Do you know where the nearest e-waste collection point is located?</div>
                 <div class="options">
                     <div class="radio-option">
-                        <input type="radio" id="compost1" name="compostHabit" value="never" required>
-                        <label for="compost1">Never</label>
+                        <input type="radio" id="location1" name="collectionPoint" value="yes" required>
+                        <label for="location1">Yes</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="compost2" name="compostHabit" value="sometimes">
-                        <label for="compost2">Sometimes</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="compost3" name="compostHabit" value="regularly">
-                        <label for="compost3">Regularly</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="compost4" name="compostHabit" value="always">
-                        <label for="compost4">Always</label>
+                        <input type="radio" id="location2" name="collectionPoint" value="no">
+                        <label for="location2">No</label>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="question">5. How often do you choose durable, long-lasting products over cheaper alternatives?</div>
+                <div class="question">Are you aware of the environmental impacts of improper e-waste disposal?</div>
                 <div class="options">
                     <div class="radio-option">
-                        <input type="radio" id="durable1" name="durableChoice" value="rarely" required>
-                        <label for="durable1">Rarely</label>
+                        <input type="radio" id="impact1" name="environmentalImpact" value="very" required>
+                        <label for="impact1">Very aware</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="durable2" name="durableChoice" value="sometimes">
-                        <label for="durable2">Sometimes</label>
+                        <input type="radio" id="impact2" name="environmentalImpact" value="somewhat">
+                        <label for="impact2">Somewhat aware</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="durable3" name="durableChoice" value="often">
-                        <label for="durable3">Often</label>
+                        <input type="radio" id="impact3" name="environmentalImpact" value="little">
+                        <label for="impact3">Little awareness</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="durable4" name="durableChoice" value="always">
-                        <label for="durable4">Always</label>
+                        <input type="radio" id="impact4" name="environmentalImpact" value="not">
+                        <label for="impact4">Not aware at all</label>
                     </div>
                 </div>
             </div>
-            
+
+            <h2>Device Usage Habits</h2>
+
+            <div class="form-group">
+                <div class="question">How long do you usually keep your electronic devices before replacing them?</div>
+                <div class="options">
+                    <div class="radio-option">
+                        <input type="radio" id="keep1" name="deviceKeepDuration" value="1" required>
+                        <label for="keep1">Less than 1 year</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="keep2" name="deviceKeepDuration" value="1-2">
+                        <label for="keep2">1-2 years</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="keep3" name="deviceKeepDuration" value="3-4">
+                        <label for="keep3">3-4 years</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="keep4" name="deviceKeepDuration" value="5+">
+                        <label for="keep4">5+ years</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="question">What factors influence your decision to replace electronic devices? (Select all that apply)</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="factor1" name="replacementFactors" value="broken">
+                        <label for="factor1">Broken/damaged</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="factor2" name="replacementFactors" value="outdated">
+                        <label for="factor2">Outdated features</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="factor3" name="replacementFactors" value="new">
+                        <label for="factor3">New model release</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="factor4" name="replacementFactors" value="battery">
+                        <label for="factor4">Battery issues</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="factor5" name="replacementFactors" value="other">
+                        <label for="factor5">Other</label>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Storage Behavior</h2>
+
+            <div class="form-group">
+                <div class="question">How many unused electronic devices do you currently have stored at home?</div>
+                <input type="number" id="storedDevices" required min="0">
+            </div>
+
+            <div class="form-group">
+                <div class="question">Why do you keep old electronic devices? (Select all that apply)</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="keep_reason1" name="storageReasons" value="backup">
+                        <label for="keep_reason1">Backup purposes</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="keep_reason2" name="storageReasons" value="sentimental">
+                        <label for="keep_reason2">Sentimental value</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="keep_reason3" name="storageReasons" value="disposal">
+                        <label for="keep_reason3">Don't know how to dispose</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="keep_reason4" name="storageReasons" value="repair">
+                        <label for="keep_reason4">Plan to repair</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="keep_reason5" name="storageReasons" value="security">
+                        <label for="keep_reason5">Data security concerns</label>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Recycling Barriers</h2>
+
+            <div class="form-group">
+                <div class="question">What prevents you from recycling electronic devices? (Select all that apply)</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barrier1" name="recyclingBarriers" value="knowledge">
+                        <label for="barrier1">Lack of knowledge about recycling locations</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barrier2" name="recyclingBarriers" value="inconvenient">
+                        <label for="barrier2">Inconvenient recycling centers</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barrier3" name="recyclingBarriers" value="privacy">
+                        <label for="barrier3">Data privacy concerns</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barrier4" name="recyclingBarriers" value="time">
+                        <label for="barrier4">Time constraints</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barrier5" name="recyclingBarriers" value="transport">
+                        <label for="barrier5">Transportation issues</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="comments">Additional Comments (Optional):</label>
                 <textarea id="comments"></textarea>
@@ -285,6 +439,12 @@
         const analytics = getAnalytics(app);
         const database = getDatabase(app);
 
+        // Function to get checkbox values
+        function getCheckboxValues(name) {
+            return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+                .map(checkbox => checkbox.value);
+        }
+
         // Form submission handler
         document.getElementById('surveyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -294,11 +454,18 @@
             
             const formData = {
                 name: document.getElementById('name').value,
+                deviceCount: document.getElementById('deviceCount').value,
+                disposalMethods: getCheckboxValues('disposalMethod'),
                 refuseFrequency: document.querySelector('input[name="refuseFrequency"]:checked').value,
                 repairFrequency: document.querySelector('input[name="repairFrequency"]:checked').value,
-                recycleFrequency: document.querySelector('input[name="recycleFrequency"]:checked').value,
-                compostHabit: document.querySelector('input[name="compostHabit"]:checked').value,
-                durableChoice: document.querySelector('input[name="durableChoice"]:checked').value,
+                ewasteAwareness: document.querySelector('input[name="ewasteAwareness"]:checked').value,
+                collectionPoint: document.querySelector('input[name="collectionPoint"]:checked').value,
+                environmentalImpact: document.querySelector('input[name="environmentalImpact"]:checked').value,
+                deviceKeepDuration: document.querySelector('input[name="deviceKeepDuration"]:checked').value,
+                replacementFactors: getCheckboxValues('replacementFactors'),
+                storedDevices: document.getElementById('storedDevices').value,
+                storageReasons: getCheckboxValues('storageReasons'),
+                recyclingBarriers: getCheckboxValues('recyclingBarriers'),
                 comments: document.getElementById('comments').value,
                 timestamp: new Date().toISOString()
             };
