@@ -53,6 +53,14 @@
             background-color: #27ae60;
         }
 
+        .refresh-btn {
+            background-color: #3498db !important;
+        }
+
+        .refresh-btn:hover {
+            background-color: #2980b9 !important;
+        }
+
         .table-responsive {
             overflow-x: auto;
             margin-top: 20px;
@@ -121,6 +129,16 @@
             color: #666;
         }
 
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #e74c3c;
+            background-color: #fdf2f2;
+            border: 1px solid #fecaca;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
         .tooltip {
             position: relative;
             display: inline-block;
@@ -166,8 +184,8 @@
 <body>
     <div class="container">
         <div class="nav-buttons">
-            <a href="index.html">Back to Survey</a>
-            
+            <a href="/">Back to Survey</a>
+            <a href="#" class="refresh-btn" onclick="loadSurveyData()">Refresh Data</a>
         </div>
         
         <h1>E-Waste Survey Results</h1>
@@ -176,28 +194,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyANZGnO1TZvHbDVNtN3IpK3vfDgYcS9k2k",
-            authDomain: "school-project-ewaste.firebaseapp.com",
-            databaseURL: "https://school-project-ewaste-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "school-project-ewaste",
-            storageBucket: "school-project-ewaste.firebasestorage.app",
-            messagingSenderId: "57572832036",
-            appId: "1:57572832036:web:583e366c40790b335bb9b1",
-            measurementId: "G-Q6BCX46YTB"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const database = getDatabase(app);
-
+    <script>
         function formatDate(dateString) {
             const options = {
                 year: 'numeric',
@@ -211,26 +208,20 @@
 
         function formatArrayData(array) {
             if (!array || array.length === 0) return '-';
+            if (typeof array === 'string') return array;
             return `<ul class="array-data">${array.map(item => `<li>${item}</li>`).join('')}</ul>`;
         }
 
         function displayData(surveys) {
             const resultsDiv = document.getElementById('results');
             
-            if (!surveys) {
+            if (!surveys || surveys.length === 0) {
                 resultsDiv.innerHTML = '<p class="no-data">No survey responses yet.</p>';
                 return;
             }
 
-            const surveysArray = Object.entries(surveys).map(([key, value]) => ({
-                id: key,
-                ...value
-            })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-            if (surveysArray.length === 0) {
-                resultsDiv.innerHTML = '<p class="no-data">No survey responses yet.</p>';
-                return;
-            }
+            // Sort by timestamp (newest first)
+            const sortedSurveys = surveys.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
             const table = `
                 <div class="table-responsive">
@@ -253,17 +244,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            ${surveysArray.map(entry => `
+                            ${sortedSurveys.map(entry => `
                                 <tr>
-                                    <td>${entry.name}</td>
-                                    <td>${entry.deviceCount}</td>
+                                    <td>${entry.name || '-'}</td>
+                                    <td>${entry.deviceCount || '-'}</td>
                                     <td>${formatArrayData(entry.disposalMethods)}</td>
-                                    <td>${entry.ewasteAwareness}</td>
-                                    <td>${entry.collectionPoint}</td>
-                                    <td>${entry.environmentalImpact}</td>
-                                    <td>${entry.deviceKeepDuration}</td>
+                                    <td>${entry.ewasteAwareness || '-'}</td>
+                                    <td>${entry.collectionPoint || '-'}</td>
+                                    <td>${entry.environmentalImpact || '-'}</td>
+                                    <td>${entry.deviceKeepDuration || '-'}</td>
                                     <td>${formatArrayData(entry.replacementFactors)}</td>
-                                    <td>${entry.storedDevices}</td>
+                                    <td>${entry.storedDevices || '-'}</td>
                                     <td>${formatArrayData(entry.storageReasons)}</td>
                                     <td>${formatArrayData(entry.recyclingBarriers)}</td>
                                     <td>
@@ -280,27 +271,44 @@
                         </tbody>
                     </table>
                 </div>
+                <p style="margin-top: 20px; text-align: center; color: #666; font-size: 14px;">
+                    Total responses: ${sortedSurveys.length}
+                </p>
             `;
             
             resultsDiv.innerHTML = table;
         }
 
-        // Set up real-time listener
-        const surveysRef = ref(database, 'surveys');
-        onValue(surveysRef, (snapshot) => {
-            const data = snapshot.val();
-            displayData(data);
-        }, (error) => {
-            console.error('Error fetching data:', error);
-            document.getElementById('results').innerHTML = 
-                '<p class="no-data">Error loading survey responses. Please try again later.</p>';
-        });
+        async function loadSurveyData() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p class="loading">Loading survey results...</p>';
+            
+            try {
+                const response = await fetch('/api/surveys');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const surveys = await response.json();
+                displayData(surveys);
+                
+            } catch (error) {
+                console.error('Error loading survey data:', error);
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        <p>Error loading survey responses: ${error.message}</p>
+                        <p>Please check if the server is running and try again.</p>
+                        <button onclick="loadSurveyData()" style="margin-top: 10px; padding: 8px 16px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
 
-        // Make refreshData available globally
-        window.refreshData = function() {
-            document.getElementById('results').innerHTML = 
-                '<p class="loading">Refreshing survey results...</p>';
-        };
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadSurveyData);
     </script>
 </body>
 </html>
